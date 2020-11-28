@@ -1,10 +1,11 @@
-# CityUOJ Crawler (Python 3)
+# CityUOJ Crawler (Python 3) 1.0.1
 # Designed and programmed by Xun Zhang
-# 27 Nov. 2020
+# 28 Nov. 2020
 
 import requests
 from bs4 import BeautifulSoup as bs
 from getpass import getpass
+import time
 
 def submit(id, path):
     url = 'http://acm.cs.cityu.edu.hk/oj2/index.php/submit/' + id
@@ -30,7 +31,7 @@ def submit(id, path):
     if (len(res.history) <= 0):
         print("\nSomething went wrong.\n")
     else:
-        print("\nSuccessfully submitted!\n")
+        print("\nSuccessfully submitted!\nJudging...\n")
     
 
 def lookup(id):
@@ -191,6 +192,8 @@ while (True):
     elif (string[0] == 'submit'):
         try:
             submit(string[1], string[2])
+            time.sleep(3.1)
+            getLast()
         except:
             print("\nSomething went wrong.\n")
     elif (string[0] == 'lookup'):
