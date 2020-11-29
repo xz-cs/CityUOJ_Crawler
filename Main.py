@@ -1,6 +1,6 @@
-# CityUOJ Crawler (Python 3) 1.0.1
+# CityUOJ Crawler (Python 3) 1.0.2
 # Designed and programmed by Xun Zhang
-# 28 Nov. 2020
+# 30 Nov. 2020
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -39,11 +39,17 @@ def lookup(id):
     r = s.get(url, headers = headersR)
     soup = bs(r.content, features="html.parser")
     title = str(soup.find('h2')).split('</span>')
-    print( "\n ======  " + id + " : " + title[2].split("</h2>")[0].strip() + "  ======")
+    print( "\n  ======  " + id + " : " + title[2].split("</h2>")[0].strip() + "  ======  ")
     if 'To be solved' in title[0]:
         print("You haven't solved this problem yet.\n")
     else:
         print("You have already solved this problem.\n")
+
+    trs = soup.find('div', {'id' : 'problem_detail'}).find_all('tr')
+    print("{:<16}".format("Time limit:") + str(trs[2].find('td')).split('</')[0].split('>')[1])
+    print("{:<16}".format("Memory limit:") + str(trs[3].find('td')).split('</')[0].split('>')[1])
+    print("{:<16}".format("Output limit:") + str(trs[4].find('td')).split('</')[0].split('>')[1])
+    print()
 
     tags = str(soup.find('ul', {'class' : 'horizontal-list problem-tag-list'})).split('<li>')
     if tags[0] != 'None':
@@ -138,8 +144,19 @@ soup = bs(r.content, features="html.parser")
 once = soup.find('input', {'name' : 'logon[_csrf_token]'})['value']   # get token
 #print(once)
 
-data = {'logon[contact]': input("\nEID/Username/Email: "),
-        'logon[password]': getpass(),
+
+Uname, Upass = "", ""
+try:
+    fin = open('login.txt', 'r')
+    Uname = fin.readline().rstrip()
+    Upass = fin.readline().rstrip()
+    print("\nLogin file found. Auto-logging in...")
+except:
+    Uname = input("\nEID/Username/Email: ")
+    Upass = getpass()
+
+data = {'logon[contact]': Uname,
+        'logon[password]': Upass,
         'logon[return_url]': 'http://acm.cs.cityu.edu.hk/oj2/index.php/profile',
         'logon[_csrf_token]': once
         }
@@ -177,6 +194,8 @@ print("Welcome, " + res + " !\n")
 string = ''
 while (True):
     string = input(">>> ").split()
+    if (len(string) < 1):
+        continue
     if (string[0] == 'help'):
         print("\n   === Help for CityUOJ Crawler ===   \n")
         print("1. >>> submit [Problem ID] [Path to Source Code]\n   (Submit your code to the server for judging.)\n")
