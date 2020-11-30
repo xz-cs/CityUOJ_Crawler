@@ -2,6 +2,10 @@
 
 ### Release Notes
 
+##### 1.0.3 
+
+1. Display Judge Option and Acceptance Rate when looking up problems.
+
 ##### 1.0.2 
 
 1. Auto login with 'login.txt'.

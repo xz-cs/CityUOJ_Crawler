@@ -1,4 +1,4 @@
-# CityUOJ Crawler (Python 3) 1.0.2
+# CityUOJ Crawler (Python 3) 1.0.3
 # Designed and programmed by Xun Zhang
 # 30 Nov. 2020
 
@@ -49,6 +49,13 @@ def lookup(id):
     print("{:<16}".format("Time limit:") + str(trs[2].find('td')).split('</')[0].split('>')[1])
     print("{:<16}".format("Memory limit:") + str(trs[3].find('td')).split('</')[0].split('>')[1])
     print("{:<16}".format("Output limit:") + str(trs[4].find('td')).split('</')[0].split('>')[1])
+    print("{:<16}".format("Judge Option:") + str(trs[5].find('td')).split('</')[0].split('>')[1].strip())
+    print()
+
+    rates = soup.find('div', {'style' : 'float:right;'}).find_all('span')
+    print("  Acceptance Rate  ")
+    print("{:<15}".format("Submissions:") + str(rates[0]).split('</')[0].split('>')[1])
+    print("{:<15}".format("Users:") + str(rates[1]).split('</')[0].split('>')[1])
     print()
 
     tags = str(soup.find('ul', {'class' : 'horizontal-list problem-tag-list'})).split('<li>')
