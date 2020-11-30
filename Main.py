@@ -52,10 +52,12 @@ def lookup(id):
     print("{:<16}".format("Judge Option:") + str(trs[5].find('td')).split('</')[0].split('>')[1].strip())
     print()
 
-    rates = soup.find('div', {'style' : 'float:right;'}).find_all('span')
+    theDiv = soup.find('div', {'style' : 'float:right;'})
+    rates = theDiv.find_all('span')
+    labels = theDiv.find_all('div', {'class' : 'problem-ratio-label'})
     print("  Acceptance Rate  ")
-    print("{:<15}".format("Submissions:") + str(rates[0]).split('</')[0].split('>')[1])
-    print("{:<15}".format("Users:") + str(rates[1]).split('</')[0].split('>')[1])
+    print("{:<15}".format("Submissions:") + str(rates[0]).split('</')[0].split('>')[1] + '  (' + str(labels[0]).split('</')[0].split('>')[1] + ')')
+    print("{:<15}".format("Users:") + str(rates[1]).split('</')[0].split('>')[1] + '  (' + str(labels[1]).split('</')[0].split('>')[1] + ')')
     print()
 
     tags = str(soup.find('ul', {'class' : 'horizontal-list problem-tag-list'})).split('<li>')
